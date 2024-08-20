@@ -1,0 +1,106 @@
+#import "font_zh.typ":font_zh,font_size_zh
+
+#let title(body)={
+  set text(font: font_zh.HeiTi, size: font_size_zh.ErHao)
+  set align(center)
+  context body
+}
+
+// latex like section, subsection, subsub
+#let TheSection=counter("the_sction")
+#let Section(body,inc:true)={
+  set text(font: font_zh.HeiTi, size: font_size_zh.SanHao)
+  set align(center)
+  v(0.5*(font_size_zh.SanHao))
+  if inc{
+    TheSection.step()
+    context TheSection.display("一、")
+  }
+  context body
+  parbreak()
+}
+#let TheSubSection=counter("the_sub_section")
+#let SubSection(body,inc:true)={
+  set text(font: font_zh.HeiTi, size: font_size_zh.SiHao)
+  v(0.5*(font_size_zh.SiHao))
+  if inc{
+    TheSubSection.step()
+    context TheSection.display("1.")
+    context TheSubSection.display("1.")
+  }
+  context body
+  parbreak()
+}
+#let TheSubSub=counter("the_sub_sub_section")
+#let SubSub(body,inc:true)={
+  set text(font: font_zh.HeiTi, size: font_size_zh.XiaoSi)
+  v(0.5*(font_size_zh.XiaoSi))
+  if inc{
+    TheSubSub.step()
+    context TheSection.display("1.")
+    context TheSubSection.display("1.")
+    context TheSubSub.display("1.")
+  }
+  context body
+  parbreak()
+}
+
+// new paragraph with parskip
+#let PARSKIP=0.5*(font_size_zh.XiaoSi)
+#let MYPAR(parskip: PARSKIP)={
+  parbreak()
+  v(PARSKIP)
+  parbreak()
+  h(0.74cm)
+}
+
+//set default text font and style
+#set text(font: font_zh.SongTi, size: font_size_zh.XiaoSi)
+#set par(leading: 12pt, first-line-indent: 0em, justify: true)
+
+//set equation props
+#set math.equation(numbering: "(1)", supplement: "公式")
+#show figure.caption: set text(font:font_zh.SongTi, size: font_size_zh.WuHao)
+#set figure(supplement: "图")
+#set pagebreak(weak: true)
+
+#title[TYPST模板]
+
+#Section(inc:false)[摘要]
+#lorem(100)
+#pagebreak()
+
+#Section[问题分析]
+#SubSection[问题背景]
+#MYPAR()
+*注* : 英文字体Times New Romans。
+#MYPAR() #lorem(50)
+#MYPAR() #lorem(100)
+#MYPAR() #lorem(100)
+
+#SubSection[问题重述]
+#SubSub[第一问]
+#SubSub[第二问]
+#SubSub[第三问]
+#Section[模型假设]
+#Section[符号说明]
+#Section[模型建立和求解]
+
+@land_on_mun 展示了Kerbal Space Program游戏画面。
+
+#figure(
+  image("ksp.png"),
+  caption:"i land on mun"
+)<land_on_mun>
+
+定日场镜分布范围有限 @bib_coverage 。
+
+#Section[评价与推广]
+
+#bibliography(
+  "bib.bib",
+  title:text(
+    font:font_zh.SongTi,
+    size:font_size_zh.SiHao
+  )[参考文献],
+  style: "gb-7714-2015-note")
