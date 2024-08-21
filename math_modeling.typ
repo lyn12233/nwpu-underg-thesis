@@ -7,31 +7,36 @@
 }
 
 // latex like section, subsection, subsub
+//counters
 #let TheSection=counter("the_sction")
+#let TheSubSection=counter("the_sub_section")
+#let TheSubSub=counter("the_sub_sub_section")
+//section
 #let Section(body,inc:true)={
   set text(font: font_zh.HeiTi, size: font_size_zh.SanHao)
   set align(center)
   v(0.5*(font_size_zh.SanHao))
   if inc{
     TheSection.step()
+    TheSubSection.update(0)
+    TheSubSub.update(0)
     context TheSection.display("一、")
   }
   context body
   parbreak()
 }
-#let TheSubSection=counter("the_sub_section")
 #let SubSection(body,inc:true)={
   set text(font: font_zh.HeiTi, size: font_size_zh.SiHao)
   v(0.5*(font_size_zh.SiHao))
   if inc{
     TheSubSection.step()
+    TheSubSub.update(0)
     context TheSection.display("1.")
-    context TheSubSection.display("1.")
+    context TheSubSection.display("1  ")
   }
   context body
   parbreak()
 }
-#let TheSubSub=counter("the_sub_sub_section")
 #let SubSub(body,inc:true)={
   set text(font: font_zh.HeiTi, size: font_size_zh.XiaoSi)
   v(0.5*(font_size_zh.XiaoSi))
@@ -39,7 +44,7 @@
     TheSubSub.step()
     context TheSection.display("1.")
     context TheSubSection.display("1.")
-    context TheSubSub.display("1.")
+    context TheSubSub.display("1 ")
   }
   context body
   parbreak()
@@ -63,6 +68,7 @@
 #show figure.caption: set text(font:font_zh.SongTi, size: font_size_zh.WuHao)
 #show figure.where(kind:image): set figure(supplement: "图") 
 #show figure.where(kind:table): set figure(supplement: "表") 
+#show figure.where(kind: table): set figure.caption(position:top)
 #set pagebreak(weak: true)
 
 //page style
@@ -81,7 +87,12 @@
 #title[TYPST模板]
 
 #Section(inc:false)[摘要]
-#lorem(100)
+#lorem(100) 
+应单独下载粗体字ttf, 下载typst.exe, 设置环境变量等。
+#v(6pt)
+#text(font:font_zh.HeiTi)[关键词: ]
+*模板 数模 #lorem(1) #lorem(2)*
+
 #pagebreak()
 
 #Section[问题分析]
@@ -98,6 +109,9 @@
 #SubSub[第三问]
 #Section[模型假设]
 #Section[符号说明]
+
+#include "math_modeling_desc.typ"
+
 #Section[模型建立和求解]
 
 @land_on_mun 展示了Kerbal Space Program游戏画面。
@@ -109,6 +123,15 @@
 
 定日场镜分布范围有限 @bib_coverage 。
 
+#SubSub[结果]
+#let result = csv("result.csv")
+#for idx in range(3){
+  result.at(idx).at(0)=$m a t h("x_x")$
+}
+#figure(
+  caption:"测试结果",
+  table(columns:3,..result.flatten())
+)
 #Section[评价与推广]
 
 #Section[参考文献]
@@ -116,3 +139,13 @@
   "bib.bib",
   title:[],
   style: "gb-7714-2015-note")
+
+#Section[附录]
+
+#let py_foo = read("foo.py")
+
+#table(
+  columns: (1fr,),
+  [foo.py],
+  [#raw(py_foo,lang:"python")]
+)
