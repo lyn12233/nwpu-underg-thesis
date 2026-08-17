@@ -55,7 +55,7 @@
   // tracking: 0pt, // space between chars
   // spacing: 100%+0pt, // space between words
   cjk-latin-spacing: none, // auto spacing may not work normal
-  baseline: 0em,
+  baseline: -0.15em,
   // overhang: true,
   top-edge: 1em,
   bottom-edge: 0em,
@@ -172,10 +172,24 @@
   ),
   _block: (
     main: basic_block_parms,
-    _heading: (
+    hdr1: (
       ..basic_block_parms,
-      above: 12pt * 0.95,
-      below: par_common_skip,
+      inset: (y: 15.6pt - 0.5em),
+      above: 3.75pt,
+      below: 3.75pt,
+      // stroke: 1pt,
+    ),
+    hdr2: (
+      ..basic_block_parms,
+      inset: (y: 15.6pt - 0.5em),
+      above: 3.75pt,
+      // stroke: 1pt,
+    ),
+    hdr3: (
+      ..basic_block_parms,
+      inset: (y: par_common_skip / 2),
+      below: par_common_skip / 2,
+      // stroke: 1pt,
     ),
   ),
   _align: (none, center, left, left),
@@ -192,12 +206,14 @@
 
   set heading(..parms._heading.main)
   show heading: set par(..parms._par.main)
-  show heading: set block(..parms._block._heading)
+  show heading.where(level: 1): set block(..parms._block.hdr1)
+  show heading.where(level: 2): set block(..parms._block.hdr2)
+  show heading.where(level: 3): set block(..parms._block.hdr3)
   show heading.where(level: 1): set text(..parms._text.hdr1)
-  show heading.where(level: 1): set align(parms._align.at(1))
   show heading.where(level: 2): set text(..parms._text.hdr2)
-  show heading.where(level: 2): set align(parms._align.at(2))
   show heading.where(level: 3): set text(..parms._text.hdr3)
+  show heading.where(level: 1): set align(parms._align.at(1))
+  show heading.where(level: 2): set align(parms._align.at(2))
   show heading.where(level: 3): set align(parms._align.at(3))
 
   context body
