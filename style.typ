@@ -102,7 +102,18 @@
   // numbering: none, // override this with explicit footer
   // supplement: auto, // supplement in page reference
   // number-align: auto, // override this with footer
-  header: [test header], // todo: impl
+  header: block(
+    fill: aqua,
+    height: 100%,
+    width: 100%,
+    stroke: (bottom: 1pt),
+  )[
+    #set text(font: font_parms._font.SongTi, size: font_parms.size.SanHao)
+    #h(200pt)
+    *本科毕业设计（论文）*
+    #place(bottom + left, dx: 100pt, rect())
+  ],
+  // todo: impl
   header-ascent: 0pt, //
   footer: [test footer], // todo: impl
   footer-descent: 0pt,
