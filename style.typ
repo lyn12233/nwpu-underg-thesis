@@ -76,8 +76,8 @@
 
 #let par_common_skip = 1.25em * 1.3 - 1em
 #let par_parms = (
-  leading: par_common_skip,
-  spacing: par_common_skip,
+  leading: 0pt,
+  spacing: 0pt,
   justify: true,
   // justification-limits:(
   //  spacing:(min:66.67%+0pt,max:150%+0pt),
@@ -117,9 +117,9 @@
     if nums.pos().len() == 1 {
       "第" + numbering("一", nums.at(0)) + "章  "
     } else if nums.pos().len() == 2 {
-      numbering("1.1.", ..nums)
+      numbering("1.1", ..nums)
     } else if nums.pos().len() == 3 {
-      numbering("1.1.1.", ..nums)
+      numbering("1.1.1", ..nums)
     }
   },
   // supplement: auto, // supplement in heading reference
@@ -159,7 +159,12 @@
       font: font_parms._font.HeiTi,
       size: font_parms.size.XiaoSi,
     ),
-    main: basic_text_parms,
+    main: (
+      ..basic_text_parms,
+      // baseline: -0.3em,
+      top-edge: 1em + 3.75pt,
+      bottom-edge: -3.75pt,
+    ),
   ),
   _par: (
     main: par_parms,
@@ -175,20 +180,20 @@
     hdr1: (
       ..basic_block_parms,
       inset: (y: 15.6pt - 0.5em),
-      above: 3.75pt,
-      below: 3.75pt,
+      // above: 3.75pt,
+      // below: 3.75pt,
       // stroke: 1pt,
     ),
     hdr2: (
       ..basic_block_parms,
       inset: (y: 15.6pt - 0.5em),
-      above: 3.75pt,
+      // above: 3.75pt,
       // stroke: 1pt,
     ),
     hdr3: (
       ..basic_block_parms,
       inset: (y: par_common_skip / 2),
-      below: par_common_skip / 2,
+      // below: par_common_skip / 2,
       // stroke: 1pt,
     ),
   ),
