@@ -43,6 +43,7 @@
   _font: (
     SongTi: ("Times New Roman", "SimSun"),
     HeiTi: ("Arial", "SimHei"), // todo: may it be times new roman
+    NCMMath: ("New Computer Modern Math", "SimSun"),
   ),
 )
 
@@ -75,6 +76,13 @@
   // slashed-zero: false,
   // fractions: false,
   // variations: ..., // 变体，包括磅数等
+)
+
+#let small_text_parms = (
+  ..basic_text_parms,
+  size: font_parms.size.WuHao,
+  top-edge: 1.45em,
+  bottom-edge: -0.45em,
 )
 
 #let par_common_skip = 1.25em * 1.3 - 1em
@@ -139,6 +147,9 @@
   numbering: (..nums) => {
     if nums.pos().len() == 1 {
       "第" + numbering("一", nums.at(0)) + "章  "
+      counter(math.equation).update(0)
+      counter(figure.where(kind: image)).update(0)
+      counter(figure.where(kind: table)).update(0)
     } else if nums.pos().len() == 2 {
       numbering("1.1", ..nums)
     } else if nums.pos().len() == 3 {
@@ -189,6 +200,63 @@
   v(0pt)
 }
 
+#let equation_parms = (
+  numbering: (..nums) => {
+    set text(..basic_text_parms, font: "SimSun")
+    context "（" + str(counter(heading).get().at(0)) + "-" + str(nums.pos().at(0)) + "）"
+  },
+  number-align: end + bottom,
+  // supplement: auto,
+  // alt: none, // alternative desc
+)
+
+#let figure_parms = (
+  // alt: none,
+  // placement: none,
+  // scope: "column",
+  // caption, kind, supplement, numbering,
+  gap: 0pt,
+  // outlined: true,
+)
+
+#let figure_caption = it => {
+  if it.kind == table {
+    block(..basic_block_parms, stroke: 0pt, text(
+      ..small_text_parms,
+      font: font_parms._font.HeiTi,
+      (
+        "表"
+          + str(counter(heading).get().at(0))
+          + "-"
+          + str(counter(figure.where(kind: table)).get().at(0))
+          + "  "
+          + it.body
+      ),
+    ))
+  } else if it.kind == image {
+    block(..basic_block_parms, stroke: 0pt, text(
+      ..small_text_parms,
+      (
+        "图"
+          + str(counter(heading).get().at(0))
+          + "-"
+          + str(counter(figure.where(kind: image)).get().at(0))
+          + "  "
+          + it.body
+      ),
+    ))
+  }
+}
+
+#let table_parms = (
+  column-gutter: 0pt,
+  row-gutter: 0pt,
+  inset: 0pt,
+  align: center + horizon,
+  // fill: none,
+  stroke: 0.5pt,
+)
+
 #let parms = (
   _text: (
     hdr1: (
@@ -212,6 +280,12 @@
       top-edge: 1em + 3.75pt,
       bottom-edge: -3.75pt,
     ),
+    math: (
+      ..basic_text_parms,
+      baseline: 0pt,
+      font: font_parms._font.NCMMath,
+    ),
+    table: small_text_parms,
   ),
   _par: (
     main: par_parms,
@@ -262,20 +336,40 @@
       // below: par_common_skip / 2,
       // stroke: 1pt,
     ),
+    math: (
+      ..basic_block_parms,
+      breakable: true,
+      // stroke: 1pt,
+    ),
   ),
   _outline: outline_parms,
   _outline_entry: outline_entry,
+  _equation: equation_parms,
+  _figure: figure_parms,
+  _caption: figure_caption,
+  _caption_pos: (table: top, image: bottom),
+  _table: table_parms,
   _align: (none, center, left, left),
 )
 
-#let main_body(..args, body) = {
+#let common_style(..args, body) = {
   show: show-cn-fakebold
-
   set text(..parms._text.main)
-
   set par(..parms._par.main)
+  show math.equation: set text(..parms._text.math)
+  show math.equation: set block(..parms._block.math)
+  set math.equation(..parms._equation)
+  set figure(..parms._figure)
+  show figure.caption: parms._caption
+  show figure.where(kind: table): set figure.caption(position: parms._caption_pos.table)
+  show figure.where(kind: image): set figure.caption(position: parms._caption_pos.image)
+  set table(..parms._table)
+  show table: set text(..parms._text.table)
+  body
+}
 
-  set page(..parms._page.main)
+#let main_body(..args, body) = {
+  show: common_style
 
   set heading(..parms._heading.main)
   show heading: set par(..parms._par.main)
@@ -295,9 +389,8 @@
 }
 
 #let before_main(..args, body) = {
-  show: show-cn-fakebold
-  set text(..parms._text.main)
-  set par(..parms._par.main)
+  show: common_style
+
   set page(..parms._page.before_main)
   set heading(..parms._heading.before_main)
   show heading: set par(..parms._par.main)
@@ -315,8 +408,20 @@
   body
 }
 
+#let main_tail(..args, body) = {
+  set heading(..parms._heading.tail)
+  body
+}
+
+#let bib(source) = {
+  heading("参考文献", level: 1)
+  bibliography(source, full: true, style: "gb-7714-2015-numeric", title: none)
+}
+
 #let thesis = (
   main_body: main_body,
   before_main: before_main,
   catalog: catalog,
+  tail: main_tail,
+  bib: bib,
 )
