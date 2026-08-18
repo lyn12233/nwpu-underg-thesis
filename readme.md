@@ -20,6 +20,17 @@
 // 致谢, 附录等
 ```
 
+# visual comparison
+
+docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs test_sty.pdf 第4页):
+
+<div align="center">
+
+<img src="ref/refpg1.png" alt="docx 模板 绪论页" width="45%">
+<img src="ref/refpg2.png" alt="typst 绪论页" width="45%">
+
+</div>
+
 # coverage
 
 - 字体
@@ -52,7 +63,8 @@
   - [x] 参考文献与引用格式
   - [x] 参考文献 x1 行距
 # todos
-- 行距,字体设置/检查
+- 行距,字体设置/检查 (50%)
+- 引用标记高度
 - 包装一级标题前后行
 - 包装图表前后行
 
