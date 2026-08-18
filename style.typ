@@ -13,19 +13,30 @@
 /// // bibliography, acknowledgement, etc
 /// ```
 ///
+/// # structure of code
+/// all parameters are wrapped into a parms dict, then functions are
+/// defined to show different regions, which are packed into `thesis` for
+/// export.
+///
 /// # implementation details
 /// ## text
 /// (1) font and font size/boundary for section(hdr1), subsection(hdr2),
-/// subsubsection(hdr3), main body and caption. (2) normal horizontal
-/// spacing, edges to cap-height and baseline. (3) enable kerning, disable
-/// hyphenate and ligature.
+/// subsubsection(hdr3), main body and caption. note normal text in docx
+/// corresponds a 0.15em baseline shift. docx makes cjk text align just
+/// at the center of a line selection. (2) normal horizontal spacing,
+/// vertical edges from cap-height(1em) to baseline or bigger. (3) enable
+/// kerning, disable hyphenate and ligature.
 /// ## paragraph
-/// (1) spacing between lines and paragraphs, which is always a 1.25x
-/// scale. this needs a conversion skip=scale*1.3-1, weird. (2) allow full
-/// justification support, currently the default parameters.
+/// (1) spacing between lines and paragraphs, which is usually a 1.25x
+/// scale. this needs a conversion skip=scale*15.6pt-1em, for 15.6pt*2 is
+/// a grid line in docx format. note the ownership of the space is part of
+/// the text, as a multi line selection in docx seams the gap in between
+/// precisely. therefore to deal with spacing edit text edges rather than
+/// set spacing+leading in `par` (2) allow full justification support,
+/// currently the default parameters.
 /// ## page
-/// (1) margin 3.18cm horizontal and 2.54cm vertical. typst now behaves
-/// weird here. (2) paper=a4. (3) footer: header:
+/// (1) margin 3.18cm horizontal and 2.54cm vertical. (2) paper=a4.
+/// (3) footer: header:
 /// ## heading
 /// (1)
 
@@ -81,11 +92,11 @@
 #let small_text_parms = (
   ..basic_text_parms,
   size: font_parms.size.WuHao,
-  top-edge: 1.45em,
-  bottom-edge: -0.45em,
+  top-edge: (1em + 23.4pt) / 2,
+  bottom-edge: (1em - 23.4pt) / 2,
 )
 
-#let par_common_skip = 1.25em * 1.3 - 1em
+#let par_common_skip = 1.25em * 1.3 - 1em // todo change this repr?
 #let par_parms = (
   leading: 0pt,
   spacing: 0pt,
@@ -417,6 +428,7 @@
 
 #let bib(source) = {
   heading("参考文献", level: 1)
+  show bibliography: set text(..basic_text_parms, top-edge: (1em + 15.6pt) / 2, bottom-edge: (1em - 15.6pt) / 2)
   bibliography(source, full: true, style: "gb-7714-2015-numeric", title: none)
 }
 
