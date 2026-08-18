@@ -37,11 +37,12 @@
     SanHao: 16pt,
     SiHao: 14pt,
     XiaoSi: 12pt,
+    WuHao: 10.5pt,
     XiaoWu: 9pt,
   ),
   _font: (
     SongTi: ("Times New Roman", "SimSun"),
-    HeiTi: ("Arial", "SimHei"),
+    HeiTi: ("Arial", "SimHei"), // todo: may it be times new roman
   ),
 )
 
@@ -126,7 +127,7 @@
       size: font_parms.size.XiaoWu,
     )[#context counter(page).display("1")]))
     #v(1.75cm)
-  ], // todo: impl
+  ],
   footer-descent: 0pt,
   // background: none, foreground: none,
 )
@@ -145,8 +146,8 @@
     }
   },
   // supplement: auto, // supplement in heading reference
-  // outlined: true, // include in typst's outline
-  // bookmarked: auto, // include in pdf's outline
+  outlined: true, // include in typst's outline
+  bookmarked: true, // include in pdf's outline
   // hanging-indent: auto, // indent for wrapping long heading
 )
 
@@ -163,6 +164,30 @@
   // clip: false,
   sticky: false, // you should manually prevent orphaned heading
 )
+
+#let outline_parms = (
+  title: none,
+  // target: heading,
+  depth: 3,
+  indent: 2em,
+)
+#let outline_entry = it => {
+  // set block(stroke: 1pt)
+  if it.level == 1 {
+    strong(it.prefix())
+    strong(it.body())
+    box(width: 1fr, baseline: 0.3em, repeat(text(baseline: -0.5em, size: font_parms.size.WuHao)[…]))
+    it.page()
+  } else {
+    h(1.7em * (it.level - 1))
+    it.prefix()
+    [ ]
+    it.body()
+    box(width: 1fr, baseline: 0.3em, repeat(text(baseline: -0.5em, size: font_parms.size.WuHao)[…]))
+    it.page()
+  }
+  v(0pt)
+}
 
 #let parms = (
   _text: (
@@ -193,9 +218,28 @@
   ),
   _page: (
     main: page_parms,
+    before_main: (
+      ..page_parms,
+      footer: [
+        #block(width: 100%, height: 1fr, place(bottom + left, dx: 23 * font_parms.size.XiaoWu, text(
+          ..basic_text_parms,
+          size: font_parms.size.XiaoWu,
+        )[#context counter(page).display("I")]))
+        #v(1.75cm)
+      ],
+    ),
   ),
   _heading: (
     main: heading_parms,
+    before_main: (
+      ..heading_parms,
+      numbering: none,
+      outlined: false,
+    ),
+    tail: (
+      ..heading_parms,
+      numbering: none,
+    ),
   ),
   _block: (
     main: basic_block_parms,
@@ -219,6 +263,8 @@
       // stroke: 1pt,
     ),
   ),
+  _outline: outline_parms,
+  _outline_entry: outline_entry,
   _align: (none, center, left, left),
 )
 
@@ -243,9 +289,34 @@
   show heading.where(level: 2): set align(parms._align.at(2))
   show heading.where(level: 3): set align(parms._align.at(3))
 
-  context body
+  counter(page).update(1)
+
+  body
+}
+
+#let before_main(..args, body) = {
+  show: show-cn-fakebold
+  set text(..parms._text.main)
+  set par(..parms._par.main)
+  set page(..parms._page.before_main)
+  set heading(..parms._heading.before_main)
+  show heading: set par(..parms._par.main)
+  show heading: set block(..parms._block.hdr1)
+  show heading: set text(..parms._text.hdr1)
+  show heading: set align(center)
+  body
+}
+
+#let catalog(..args, body) = {
+  set outline(..parms._outline)
+  show outline.entry: parms._outline_entry
+  outline()
+  pagebreak()
+  body
 }
 
 #let thesis = (
   main_body: main_body,
+  before_main: before_main,
+  catalog: catalog,
 )
