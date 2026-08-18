@@ -6,9 +6,13 @@ with plb.open('test_sty.pdf') as pdf_inst:
     ds = []
     for c in pg.chars:
         print(c['text'],end="")
-        if c['text'] in '空绪听':
+        if c['text'] in '本空绪听':
             print(f"{c['y1']}, {c['y0']}\n")
             ds.append(pos-c['y1'])
             pos=c['y0']
+    print('\n'*2)
+    for e in pg.edges:
+        # print(e['pts'] if 'pts' in e else "<na>")
+        print(e)
 
-print(f'deltas: {ds}')
+# print(f'deltas: {ds}')

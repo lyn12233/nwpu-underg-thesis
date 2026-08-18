@@ -102,16 +102,15 @@
   // numbering: none, // override this with explicit footer
   // supplement: auto, // supplement in page reference
   // number-align: auto, // override this with footer
-  header: block(
-    fill: aqua,
-    height: 100%,
-    width: 100%,
-    stroke: (bottom: 1pt),
-  )[
-    #set text(font: font_parms._font.SongTi, size: font_parms.size.SanHao)
-    #h(200pt)
-    *本科毕业设计（论文）*
-    #place(bottom + left, dx: 100pt, rect())
+  header: align(top)[
+    #set text(..basic_text_parms, size: font_parms.size.SanHao)
+    #v(1.5cm)
+    #block(inset: 2.4pt, width: 100%)[
+      #h(200pt)
+      *本科毕业设计（论文）*
+    ]
+    // #place(bottom + left, dx: 100pt, rect())
+    #line(length: 100%, stroke: 0.72pt)
   ],
   // todo: impl
   header-ascent: 0pt, //
