@@ -30,6 +30,7 @@
 /// (1)
 
 #import "@preview/cuti:0.4.0": show-cn-fakebold
+#import "corrections.typ": calib
 
 #let font_parms = (
   size: (
@@ -109,7 +110,7 @@
       #h(200pt)
       *本科毕业设计（论文）*
     ]
-    // #place(bottom + left, dx: 100pt, rect())
+    #v(calib.header_line_dy)
     #line(length: 100%, stroke: 0.72pt)
   ],
   // todo: impl
