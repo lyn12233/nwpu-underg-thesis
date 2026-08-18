@@ -37,6 +37,7 @@
     SanHao: 16pt,
     SiHao: 14pt,
     XiaoSi: 12pt,
+    XiaoWu: 9pt,
   ),
   _font: (
     SongTi: ("Times New Roman", "SimSun"),
@@ -107,15 +108,25 @@
     #set text(..basic_text_parms, size: font_parms.size.SanHao)
     #v(1.5cm)
     #block(inset: 2.4pt, width: 100%)[
-      #h(200pt)
-      *本科毕业设计（论文）*
+      #h(10.45 * 8pt)
+      #box(width: 1fr, align(center)[
+        #h(3 * 8pt + calib.header_text_dx)
+        *本科毕业设计（论文）*
+      ])
     ]
     #v(calib.header_line_dy)
     #line(length: 100%, stroke: 0.72pt)
+    #place(top + left, dx: 3.44cm, dy: 1.5cm - 0.06cm, image("ref/npu_logo_1.png", height: 0.61cm, width: 2.99cm))
   ],
   // todo: impl
   header-ascent: 0pt, //
-  footer: [test footer], // todo: impl
+  footer: [
+    #block(width: 100%, height: 1fr, place(bottom + left, dx: 23 * font_parms.size.XiaoWu, text(
+      ..basic_text_parms,
+      size: font_parms.size.XiaoWu,
+    )[#context counter(page).display("1")]))
+    #v(1.75cm)
+  ], // todo: impl
   footer-descent: 0pt,
   // background: none, foreground: none,
 )

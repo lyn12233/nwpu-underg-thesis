@@ -3,4 +3,5 @@
 
 #let calib = (
   header_line_dy: 1pt,
+  header_text_dx: 2pt,
 )
