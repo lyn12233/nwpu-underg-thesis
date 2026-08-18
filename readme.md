@@ -1,5 +1,7 @@
 # nwpu-thesis-undrergraduate
 
+![In Development](https://img.shields.io/badge/status-in%20development-orange)
+
 根据nwpu本科毕业设计docx模板设计的typst模板.
 目前模板为 `style.typ`.
 
