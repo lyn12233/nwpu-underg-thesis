@@ -371,6 +371,8 @@
 #let main_body(..args, body) = {
   show: common_style
 
+
+  set page(..parms._page.main)
   set heading(..parms._heading.main)
   show heading: set par(..parms._par.main)
   show heading.where(level: 1): set block(..parms._block.hdr1)
