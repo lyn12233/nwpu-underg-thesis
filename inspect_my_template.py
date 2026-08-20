@@ -24,4 +24,5 @@ with plb.open('test_sty.pdf') as pdf_inst:
 
 # print(f'deltas: {ds}')
 
+print("image:")
 print(pg.images[0])

@@ -125,9 +125,19 @@
   // supplement: auto, // supplement in page reference
   // number-align: auto, // override this with footer
   header: align(top)[
-    #set text(..basic_text_parms, size: font_parms.size.SanHao)
-    #v(1.5cm)
-    #block(inset: 2.4pt, width: 100%)[
+
+    // this is the header, text+logo
+    // goes weirder now, 31.2t height -> 1.3em=20.8pt
+    // same scale applies to baseline: 0.15em*31.2/20.8 -> 0.1em
+    // also top and bottom edge/inset: (1.3em-16pt)/2 -> 2.4pt
+
+    #set text(
+      ..basic_text_parms,
+      size: font_parms.size.SanHao,
+      baseline: -0.1em,
+    )
+    #v(1.5cm + calib.header_text_dy)
+    #block(inset: 0.3 * 8pt, width: 100%, stroke: 0.0pt)[
       #h(10.45 * 8pt)
       #box(width: 1fr, align(center)[
         #h(3 * 8pt + calib.header_text_dx)
@@ -136,7 +146,12 @@
     ]
     #v(calib.header_line_dy)
     #line(length: 100%, stroke: 0.72pt)
-    #place(top + left, dx: 3.44cm, dy: 1.5cm - 0.06cm, image("ref/npu_logo_1.png", height: 0.61cm, width: 2.99cm))
+    #place(
+      top + left,
+      dx: 3.44cm,
+      dy: 1.5cm + calib.header_img_dy,
+      image("ref/npu_logo_1.png", height: 0.61cm, width: 2.99cm),
+    )
   ],
   // todo: impl
   header-ascent: 0pt, //

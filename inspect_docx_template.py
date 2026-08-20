@@ -8,12 +8,14 @@ with plb.open('docx_template.pdf') as pdf_inst:
             print(f"{c['y1']}, {c['y0']}\n")
         
         if c['text'] == '本':
-            print(f"{c['x1']}, {c['x0']}\n")
+            print(c['x0'], c['x1'], c['y0'], c['y1'])
 
         if c['text'] == '1':
             print(c['x0'], c['x1'], c['y0'], c['y1'])
     print(dir(pg))
     print(pg.edges[0])
 
+
+    print("image:")
     print(pg.images[0])
     
