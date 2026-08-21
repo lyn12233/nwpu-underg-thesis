@@ -228,8 +228,12 @@
 
 #let equation_parms = (
   numbering: (..nums) => {
-    set text(..basic_text_parms, font: "SimSun")
-    context "（" + str(counter(heading).get().at(0)) + "-" + str(nums.pos().at(0)) + "）"
+    set text(
+      ..basic_text_parms,
+    )
+    // set actually identical to main matter font
+    // consider docx template flawed here
+    context "(" + str(counter(heading).get().at(0)) + "-" + str(nums.pos().at(0)) + ")"
   },
   number-align: end + bottom,
   // supplement: auto,
@@ -365,6 +369,8 @@
     math: (
       ..basic_block_parms,
       breakable: true,
+      // derived from x1.5 min spacing of the numbering
+      inset: (y: 11.7pt - 0.5em),
       // stroke: 1pt,
     ),
   ),

@@ -96,4 +96,7 @@ $ L_p = integral_0^infinity E(t) dif t $
 
 #show: thesis.tail
 
+
+#align(center, text(fill: rgb(255, 0, 0))[*（空 2 行，小四号，下同）*])
+
 #(thesis.bib)("test_sty.bib")
