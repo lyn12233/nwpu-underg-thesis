@@ -66,7 +66,11 @@ Virtual auditory technology is also called auralization. It is brought forward a
 
 $ N_("reft") = (4 pi c^3)/(3 V) t^3 $
 
-$ L_p = integral_0^infinity E(t) dif t $
+$
+  L_p & = integral_0^infinity E(t) dif t \
+      & = integral_0^infinity e^(-1/2 x^2) dif t \
+      & = 2 pi
+$
 
 #align(center, text(fill: rgb(255, 0, 0))[*（表格标题五号黑体，表中内容五号宋体，居中，按章标号）*])
 

@@ -230,6 +230,10 @@
   numbering: (..nums) => {
     set text(
       ..basic_text_parms,
+      // this doesn't ctrl equation row height correctly
+      // top-edge: (1em + 23.4pt) / 2,
+      // bottom-edge: (1em - 23.4pt) / 2,
+      // baseline: 0.3em,
     )
     // set actually identical to main matter font
     // consider docx template flawed here
@@ -319,6 +323,11 @@
   ),
   _par: (
     main: par_parms,
+    math: (
+      ..par_parms,
+      // x1.5 in 12pt, only spacing in multiline equation
+      leading: (23.4pt - 1em) / 2,
+    ),
   ),
   _page: (
     main: page_parms,
@@ -369,9 +378,9 @@
     math: (
       ..basic_block_parms,
       breakable: true,
-      // derived from x1.5 min spacing of the numbering
-      inset: (y: 11.7pt - 0.5em),
-      // stroke: 1pt,
+      // derived from x1.5 spacing
+      inset: (y: (23.4pt - 1em) / 2),
+      // stroke: 0.51pt,
     ),
   ),
   _outline: outline_parms,
@@ -389,6 +398,7 @@
   set text(..parms._text.main)
   set par(..parms._par.main)
   show math.equation: set text(..parms._text.math)
+  show math.equation: set par(..parms._par.math)
   show math.equation: set block(..parms._block.math)
   set math.equation(..parms._equation)
   set figure(..parms._figure)
