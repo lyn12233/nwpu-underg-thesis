@@ -72,6 +72,12 @@
   cjk-latin-spacing: none, // auto spacing may not work normal
   baseline: -0.15em,
   // overhang: true,
+  /*
+  dispose this, for it may add calc difficulties special texts.
+  lineskip is added by either overridding these or setting block insets.
+  top-edge: (1em + 15.6pt * 1.25) / 2,
+  bottom-edge: (1em - 15.6pt * 1.25) / 2,
+  */
   top-edge: 1em,
   bottom-edge: 0em,
   // lang: "en",
@@ -311,12 +317,13 @@
       ..basic_text_parms,
       font: font_parms._font.HeiTi,
       size: font_parms.size.XiaoSi,
+      top-edge: (1em + 15.6pt * 1.25) / 2,
+      bottom-edge: (1em - 15.6pt * 1.25) / 2,
     ),
     main: (
       ..basic_text_parms,
-      // baseline: -0.3em,
-      top-edge: 1em + 3.75pt,
-      bottom-edge: -3.75pt,
+      top-edge: (1em + 15.6pt * 1.25) / 2,
+      bottom-edge: (1em - 15.6pt * 1.25) / 2,
     ),
     math: (
       ..basic_text_parms,
@@ -374,8 +381,8 @@
     ),
     hdr3: (
       ..basic_block_parms,
-      inset: (y: par_common_skip / 2),
-      // inset: 0pt,
+      // inset: (y: par_common_skip / 2),
+      inset: 0pt,
       // stroke: 1pt,
     ),
     math: (
@@ -386,49 +393,94 @@
       // stroke: 0.51pt,
     ),
   ),
-  _outline: outline_parms,
-  _outline_entry: outline_entry,
   _equation: equation_parms,
   _figure: figure_parms,
   _caption: figure_caption,
   _caption_pos: (table: top, image: bottom),
   _table: table_parms,
-  _align: (none, center, left, left),
+  _align: (hdr1: center, hdr2: left, hdr3: left),
+  i_heading: it => {
+    if it.level == 1 {
+      align(center, text(
+        ..basic_text_parms,
+        top-edge: (1em + 15.6pt * 1.25) / 2,
+        bottom-edge: (1em - 15.6pt * 1.25) / 2,
+        fill: rgb(255, 0, 0),
+        [*（空 2 行，小四号，下同）*],
+      ))
+      it
+      align(center, text(
+        ..basic_text_parms,
+        top-edge: (1em + 15.6pt * 1.25) / 2,
+        bottom-edge: (1em - 15.6pt * 1.25) / 2,
+        fill: rgb(255, 0, 0),
+        [*（空 1 行）*],
+      ))
+    } else {
+      it
+    }
+  },
+  i_bibliography: source => {
+    heading("参考文献", level: 1)
+    show bibliography: set text(
+      ..basic_text_parms,
+      // 2026.8 bib spacing is currently x1
+      top-edge: (1em + 15.6pt) / 2,
+      bottom-edge: (1em - 15.6pt) / 2,
+    )
+    bibliography(source, full: true, style: "gb-7714-2015-numeric", title: none)
+  },
+  i_outline: () => {
+    set outline(..outline_parms)
+    show outline.entry: outline_entry
+    outline()
+  },
 )
 
-#let common_style(..args, body) = {
+#let common_style(body) = {
   show: show-cn-fakebold
   set text(..parms._text.main)
   set par(..parms._par.main)
+
   show math.equation: set text(..parms._text.math)
   show math.equation: set par(..parms._par.math)
   show math.equation: set block(..parms._block.math)
   set math.equation(..parms._equation)
+
   set figure(..parms._figure)
   show figure.caption: parms._caption
   show figure.where(kind: table): set figure.caption(position: parms._caption_pos.table)
   show figure.where(kind: image): set figure.caption(position: parms._caption_pos.image)
   set table(..parms._table)
   show table: set text(..parms._text.table)
-  body
-}
 
-#let main_body(..args, body) = {
-  show: common_style
-
-
-  set page(..parms._page.main)
-  set heading(..parms._heading.main)
-  show heading: set par(..parms._par.main)
   show heading.where(level: 1): set block(..parms._block.hdr1)
   show heading.where(level: 2): set block(..parms._block.hdr2)
   show heading.where(level: 3): set block(..parms._block.hdr3)
   show heading.where(level: 1): set text(..parms._text.hdr1)
   show heading.where(level: 2): set text(..parms._text.hdr2)
   show heading.where(level: 3): set text(..parms._text.hdr3)
-  show heading.where(level: 1): set align(parms._align.at(1))
-  show heading.where(level: 2): set align(parms._align.at(2))
-  show heading.where(level: 3): set align(parms._align.at(3))
+  show heading.where(level: 1): set align(parms._align.hdr1)
+  show heading.where(level: 2): set align(parms._align.hdr2)
+  show heading.where(level: 3): set align(parms._align.hdr3)
+
+  show heading: set par(..parms._par.main)
+
+  body
+}
+
+#let begin_thesis(body) = {
+  show: common_style
+  show heading: parms.i_heading
+
+  body
+}
+
+#let main_body(body) = {
+  show: common_style
+
+  set page(..parms._page.main)
+  set heading(..parms._heading.main)
 
   counter(page).update(1)
 
@@ -440,36 +492,26 @@
 
   set page(..parms._page.before_main)
   set heading(..parms._heading.before_main)
-  show heading: set par(..parms._par.main)
-  show heading: set block(..parms._block.hdr1)
-  show heading: set text(..parms._text.hdr1)
-  show heading: set align(center)
+
   body
 }
 
-#let catalog(..args, body) = {
-  set outline(..parms._outline)
-  show outline.entry: parms._outline_entry
-  outline()
-  pagebreak()
-  body
+#let contents_table() = {
+  show: common_style
+  (parms.i_outline)()
 }
 
-#let main_tail(..args, body) = {
+#let tailof_main(..args, body) = {
+  show: common_style
   set heading(..parms._heading.tail)
   body
 }
 
-#let bib(source) = {
-  heading("参考文献", level: 1)
-  show bibliography: set text(..basic_text_parms, top-edge: (1em + 15.6pt) / 2, bottom-edge: (1em - 15.6pt) / 2)
-  bibliography(source, full: true, style: "gb-7714-2015-numeric", title: none)
-}
-
 #let thesis = (
+  begin: begin_thesis,
   main_body: main_body,
   before_main: before_main,
-  catalog: catalog,
-  tail: main_tail,
-  bib: bib,
+  contents_table: contents_table,
+  tailof_main: tailof_main,
+  bib: parms.i_bibliography,
 )

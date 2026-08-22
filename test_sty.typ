@@ -1,12 +1,10 @@
 #import "style.typ": thesis
 
+#show: thesis.begin
+
 #show: thesis.before_main
 
-#align(center, text(fill: rgb(255, 0, 0))[*（空 2 行，小四号，下同）*])
-
 = 摘要
-
-#align(center, text(fill: rgb(255, 0, 0))[*（空 1 行）*])
 
 #h(2em)
 听觉虚拟又可称为可听化，是近年来随着声学仿真技术的发展而出现的新概念，即通过对包含单个（或多个）声源的声场进行物理或数学建模，以达到模拟空间听音效果的目的。若考虑双耳效应，则可称为双耳听觉虚拟（Binaural Modeling）。
@@ -17,11 +15,7 @@
 
 #pagebreak()
 
-#align(center, text(fill: rgb(255, 0, 0))[*（空 2 行，小四号，下同）*])
-
 = ABSTRACT
-
-#align(center, text(fill: rgb(255, 0, 0))[*（空 1 行）*])
 
 #h(2em)
 Virtual auditory technology is also called auralization. It is brought forward as a new concept with the development of acoustic simulation techniques in recent years and can be implemented by establishing the physical or mathematical models of a sound field to achieve sound effects simulation. If we consider the binaural effect, it can be called binaural virtual auditory.
@@ -32,22 +26,14 @@ Virtual auditory technology is also called auralization. It is brought forward a
 
 #pagebreak()
 
-#align(center, text(fill: rgb(255, 0, 0))[*（空 2 行，小四号，下同）*])
-
 = #underline("目 录", stroke: 1pt, offset: 0em)
 
-#align(center, text(fill: rgb(255, 0, 0))[*（空 1 行）*])
-
-#show: thesis.catalog
+#(thesis.contents_table)()
+#pagebreak()
 
 #show: thesis.main_body
 
-
-#align(center, text(fill: rgb(255, 0, 0))[*（空 2 行，小四号，下同）*])
-
 = 绪论
-
-#align(center, text(fill: rgb(255, 0, 0))[*（空 1 行）*])
 
 == 可听化技术概述
 
@@ -98,9 +84,6 @@ $
 
 #pagebreak()
 
-#show: thesis.tail
-
-
-#align(center, text(fill: rgb(255, 0, 0))[*（空 2 行，小四号，下同）*])
+#show: thesis.tailof_main
 
 #(thesis.bib)("test_sty.bib")
