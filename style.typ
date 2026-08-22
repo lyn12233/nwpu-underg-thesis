@@ -297,11 +297,15 @@
       ..basic_text_parms,
       font: font_parms._font.HeiTi,
       size: font_parms.size.SanHao,
+      top-edge: (1em + 31.2pt) / 2,
+      bottom-edge: (1em - 31.2pt) / 2,
     ),
     hdr2: (
       ..basic_text_parms,
       font: font_parms._font.HeiTi,
       size: font_parms.size.SiHao,
+      top-edge: (1em + 31.2pt) / 2,
+      bottom-edge: (1em - 31.2pt) / 2,
     ),
     hdr3: (
       ..basic_text_parms,
@@ -358,21 +362,20 @@
     main: basic_block_parms,
     hdr1: (
       ..basic_block_parms,
-      inset: (y: 15.6pt - 0.5em),
-      // above: 3.75pt,
-      // below: 3.75pt,
+      // inset: (y: 15.6pt - 0.5em),
+      inset: 0pt,
       // stroke: 1pt,
     ),
     hdr2: (
       ..basic_block_parms,
-      inset: (y: 15.6pt - 0.5em),
-      // above: 3.75pt,
+      // inset: (y: 15.6pt - 0.5em),
+      inset: 0pt,
       // stroke: 1pt,
     ),
     hdr3: (
       ..basic_block_parms,
       inset: (y: par_common_skip / 2),
-      // below: par_common_skip / 2,
+      // inset: 0pt,
       // stroke: 1pt,
     ),
     math: (
