@@ -8,4 +8,5 @@
   header_img_dy: 1.86pt,
   baseline_dy: 0.15pt,
   baseline_hdr1_dy: 0.4pt,
+  cite_dy: -0.3pt,
 )

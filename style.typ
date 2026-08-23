@@ -114,7 +114,7 @@
   // // need to change this later
   // // same as the fields in text, meaning spacing between words and chars
   linebreaks: "optimized", // change linebreak position for justification
-  first-line-indent: (amount: 0pt, all: true),
+  first-line-indent: (amount: 2em, all: true),
   // hanging-indent: 0pt,
 )
 
@@ -214,9 +214,22 @@
   depth: 3,
   indent: 2em,
 )
+#let cnt_hdr1 = counter("outline_cnt1")
+#let cnt_hdr1_after = counter("outline_cnt2")
 #let outline_entry = it => {
   // set block(stroke: 1pt)
   if it.level == 1 {
+    // block(height: 7.8pt, fill: aqua)
+    if cnt_hdr1.get().at(0) > 0 {
+      if cnt_hdr1_after.get().at(0) == 1 {
+        block(height: 3.9pt)
+      } else {
+        block(height: 7.8pt)
+      }
+    }
+    cnt_hdr1.step()
+    cnt_hdr1_after.update(1)
+
     strong(it.prefix())
     strong(it.body())
     box(
@@ -233,6 +246,8 @@
     )
     it.page()
   } else {
+    cnt_hdr1_after.update(0)
+
     h(1.7em * (it.level - 1))
     it.prefix() + " "
     it.body()
@@ -318,6 +333,14 @@
   stroke: 0.5pt,
 )
 
+#let image_parms = (
+  // format: auto,
+  width: 12cm,
+  height: auto,
+  fit: "contain",
+  scaling: "smooth",
+)
+
 #let parms = (
   _text: (
     hdr1: (
@@ -353,6 +376,9 @@
       font: font_parms._font.NCMMath,
     ),
     table: small_text_parms,
+    cite: (
+      baseline: calib.cite_dy,
+    ),
   ),
   _par: (
     main: par_parms,
@@ -420,6 +446,7 @@
   _caption: figure_caption,
   _caption_pos: (table: top, image: bottom),
   _table: table_parms,
+  _image: image_parms,
   _align: (hdr1: center, hdr2: left, hdr3: left),
   i_heading: it => {
     if it.level == 1 {
@@ -515,6 +542,14 @@
           "unknown-figure"
         },
       ))
+    } else if elem.func() == math.equation {
+      (
+        "公式"
+          + " "
+          + str(counter(math.equation).at(elem.location()).at(0))
+          + "-"
+          + str(counter(math.equation).at(elem.location()).at(0))
+      )
     } else {
       it
     }
@@ -533,6 +568,7 @@
   },
   i_outline: () => {
     set outline(..outline_parms)
+    set par(first-line-indent: 0pt)
     show outline.entry: outline_entry
     outline()
   },
@@ -554,6 +590,9 @@
   show figure.where(kind: image): set figure.caption(position: parms._caption_pos.image)
   set table(..parms._table)
   show table: set text(..parms._text.table)
+  set image(..parms._image)
+
+  show cite: set text(..parms._text.cite)
 
   show heading.where(level: 1): set block(..parms._block.hdr1)
   show heading.where(level: 2): set block(..parms._block.hdr2)
@@ -564,8 +603,6 @@
   show heading.where(level: 1): set align(parms._align.hdr1)
   show heading.where(level: 2): set align(parms._align.hdr2)
   show heading.where(level: 3): set align(parms._align.hdr3)
-
-  show heading: set par(..parms._par.main)
 
   body
 }
@@ -578,9 +615,6 @@
   show ref: parms.i_ref
 
   body
-}
-
-body
 }
 
 #let main_body(body) = {

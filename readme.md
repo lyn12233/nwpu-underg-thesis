@@ -23,12 +23,19 @@
 
 # validation & visual comparison
 
-docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs test_sty.pdf 第4页):
+docx 模板与 typst 输出的页面对比:
 
 <div align="center">
 
+**绪论页** (docx_template.pdf 第16页 vs test_sty.pdf 第4页)
+
 <img src="ref/refpg1.png" alt="docx 模板 绪论页" width="45%">
 <img src="ref/refpg2.png" alt="typst 绪论页" width="45%">
+
+**目录页** (docx_template.pdf 第15页 vs test_sty.pdf 第3页)
+
+<img src="ref/refpg3.png" alt="docx 模板 目录页" width="45%">
+<img src="ref/refpg4.png" alt="typst 目录页" width="45%">
 
 </div>
 
@@ -52,7 +59,7 @@ docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs tes
   - [x] 公式编号为英文内容, baseline对齐
 - 段落
   - [ ] justify
-  - [ ] 默认缩进
+  - [x] 默认缩进
   - [x] 多行公式间距
 - 页面
   - [x] 页眉3.18cm,距离顶部1.5cm,logo+文字+横线
@@ -65,6 +72,7 @@ docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs tes
   - [x] 增加公式块padding
 - 目录
   - [x] 正文字体, 一级标题加粗, 缩进 (1.7em?)
+  - [x] 一级标题间和子标题间的间距(3.9pt, 7.8pt)
 - 公式
   - [x] 公式编号, 对齐
 - 图表
@@ -72,7 +80,11 @@ docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs tes
   - [x] 图题宋体五号,位置
   - [x] 表题黑体五号,位置
   - [x] x1.5行距
-  - [ ] 图表引用格式
+  - [x] 图默认宽9cm
+- 引用 
+  - [x] 图表引用格式
+  - [x] 公式引用格式
+  - [x] 文献引用格式
 - 摘要,正文,参考文献
   - [x] 正文前后的编号
   - [x] 参考文献与引用格式
@@ -80,9 +92,8 @@ docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs tes
 
 # todos
 - 行距,字体设置/检查 (90%)
-- 引用标记高度
-- 包装图表前后行
 - 数字对齐
+- 参考文献中英文格式
 
 # license
 [Unlicense: freely and unencumberedly released to public domain](./LICENSE).
