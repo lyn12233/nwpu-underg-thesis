@@ -479,7 +479,48 @@
       it
     }
   },
+  i_ref: it => {
+    let elem = it.element
+    if elem == none {
+      it // this is the deafult behavior?
+    } else if elem.func() == figure {
+      link(elem.location(), box(
+        // stroke: 0.5pt,
+        baseline: 0.3em,
+        if elem.kind == table {
+          (
+            "表"
+              + " "
+              + str(counter(heading).at(elem.location()).at(0))
+              + "-"
+              + str(counter(figure.where(kind: table)).at(elem.location()).at(0))
+          )
+        } else if elem.kind == image {
+          (
+            "图"
+              + " "
+              + str(counter(heading).at(elem.location()).at(0))
+              + "-"
+              + str(counter(figure.where(kind: image)).at(elem.location()).at(0))
+          )
+        } else if elem.kind == grid {
+          (
+            "图表"
+              + " "
+              + str(counter(heading).at(elem.location()).at(0))
+              + "-"
+              + str(counter(figure.where(kind: grid)).at(elem.location()).at(0))
+          )
+        } else {
+          "unknown-figure"
+        },
+      ))
+    } else {
+      it
+    }
+  },
   i_bibliography: source => {
+    pagebreak(weak: true)
     heading("参考文献", level: 1)
     show bibliography: set text(
       ..basic_text_parms,
@@ -488,6 +529,7 @@
       bottom-edge: (1em - 15.6pt) / 2,
     )
     bibliography(source, full: true, style: "gb-7714-2015-numeric", title: none)
+    pagebreak(weak: true)
   },
   i_outline: () => {
     set outline(..outline_parms)
@@ -533,8 +575,12 @@
 
   show heading: parms.i_heading
   show figure: parms.i_figure
+  show ref: parms.i_ref
 
   body
+}
+
+body
 }
 
 #let main_body(body) = {
