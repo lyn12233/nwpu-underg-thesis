@@ -41,7 +41,7 @@ docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs tes
 
 > 众所周知typology是一项恶心的缺乏文档的学问, 对本项目探索的具体细节可以参考[style.typ](./style.typ)和[spacing_patter.md](./test/spacing_patter.md)中的解释; 对于无法通过理论填补的误差使用[corrections.typ](./corrections.typ)校正.
 
-> 标准docx模板存在瑕疵, 如宋体数字(在公式标号),times和黑体混用, 目录下划线和填充异常, 不采用三线表等, 本模板将选择忽略.
+> 标准模板存在瑕疵, 如宋体数字(在公式标号),times和黑体混用, 目录下划线和填充异常, 不采用三线表等, 本模板将选择忽略.
 
 # coverage
 
@@ -50,7 +50,6 @@ docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs tes
   - [x] 公式`New Computer Modern Math`字体, 间距
   - [x] 表格五号宋体 x1.5 行距
   - [x] 公式编号为英文内容, baseline对齐
-  - [ ] abstract为宋体
 - 段落
   - [ ] justify
   - [ ] 默认缩进
@@ -83,6 +82,7 @@ docx 模板与 typst 输出的绪论页对比 (docx_template.pdf 第16页 vs tes
 - 行距,字体设置/检查 (90%)
 - 引用标记高度
 - 包装图表前后行
+- 数字对齐
 
 # license
 [Unlicense: freely and unencumberedly released to public domain](./LICENSE).

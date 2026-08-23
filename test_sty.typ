@@ -15,18 +15,16 @@
 
 #pagebreak()
 
-= ABSTRACT
+= #text("ABSTRACT", font: "Times New Roman")
 
 #h(2em)
 Virtual auditory technology is also called auralization. It is brought forward as a new concept with the development of acoustic simulation techniques in recent years and can be implemented by establishing the physical or mathematical models of a sound field to achieve sound effects simulation. If we consider the binaural effect, it can be called binaural virtual auditory.
 
 #align(center, text(fill: rgb(255, 0, 0))[*（空 1 行，小四号）*])
 
-*KEY WORDS*：virtual auditory, HRTF, neural network
+*KEY WORDS*: virtual auditory, HRTF, neural network
 
 #pagebreak()
-
-= #underline("目 录", stroke: 1pt, offset: 0em)
 
 #(thesis.contents_table)()
 #pagebreak()
@@ -58,8 +56,6 @@ $
       & = 2 pi
 $
 
-#align(center, text(fill: rgb(255, 0, 0))[*（表格标题五号黑体，表中内容五号宋体，居中，按章标号）*])
-
 #figure(
   table(
     columns: (3.18cm,) * 3,
@@ -72,13 +68,7 @@ $
   caption: [三种算法的比较],
 )
 
-#align(center, text(fill: rgb(255, 0, 0))[*（表前、后各空1行）*])
-
-#align(center, text(fill: rgb(255, 0, 0))[*（图题及图内文字为五号字体，按章标号，单位格式见图）*])
-
 #figure(image("ref/ksp.png", height: 9.9cm, width: 13.2cm, fit: "cover"), caption: [不同频率的声压级])
-
-#align(center, text(fill: rgb(255, 0, 0))[*（图前、后各空1行）*])
 
 = 测试
 

@@ -18,4 +18,11 @@ with plb.open('docx_template.pdf') as pdf_inst:
 
     print("image:")
     print(pg.images[0])
-    
+
+    print("contents page:")
+    pg = pdf_inst.pages[14]
+    print("underline stroke:")
+    print("\n".join(f"points: {e['pts']}, stroke:{e['linewidth']}" for e in pg.edges[:2]))
+    for c in pg.chars:
+        print(c['text'], end="")
+

@@ -70,7 +70,7 @@
   // tracking: 0pt, // space between chars
   // spacing: 100%+0pt, // space between words
   cjk-latin-spacing: none, // auto spacing may not work normal
-  baseline: -0.15em,
+  baseline: -0.15em + calib.baseline_dy,
   // overhang: true,
   /*
   dispose this, for it may add calc difficulties special texts.
@@ -219,14 +219,35 @@
   if it.level == 1 {
     strong(it.prefix())
     strong(it.body())
-    box(width: 1fr, baseline: 0.3em, repeat(text(baseline: -0.5em, size: font_parms.size.WuHao)[…]))
+    box(
+      width: 1fr,
+      baseline: 0pt,
+      // stroke: 0.5pt,
+      repeat(text(
+        font: "SimSun",
+        top-edge: 1em,
+        bottom-edge: 0em,
+        baseline: 0em,
+        size: font_parms.size.WuHao,
+      )[…]),
+    )
     it.page()
   } else {
     h(1.7em * (it.level - 1))
-    it.prefix()
-    [ ]
+    it.prefix() + " "
     it.body()
-    box(width: 1fr, baseline: 0.3em, repeat(text(baseline: -0.5em, size: font_parms.size.WuHao)[…]))
+    box(
+      width: 1fr,
+      baseline: 0pt,
+      // stroke: 0.5pt,
+      repeat(text(
+        font: "SimSun",
+        top-edge: 1em,
+        bottom-edge: 0em,
+        baseline: 0em,
+        size: font_parms.size.WuHao,
+      )[…]),
+    )
     it.page()
   }
   v(0pt)
@@ -303,6 +324,7 @@
       ..basic_text_parms,
       font: font_parms._font.HeiTi,
       size: font_parms.size.SanHao,
+      baseline: -0.15em + calib.baseline_hdr1_dy,
       top-edge: (1em + 31.2pt) / 2,
       bottom-edge: (1em - 31.2pt) / 2,
     ),
@@ -420,6 +442,43 @@
       it
     }
   },
+  i_figure: it => {
+    if it.kind == table {
+      align(center, text(
+        ..basic_text_parms,
+        top-edge: (1em + 15.6pt * 1.25) / 2,
+        bottom-edge: (1em - 15.6pt * 1.25) / 2,
+        fill: rgb(255, 0, 0),
+        [*（表格标题五号黑体，表中内容五号宋体，居中，按章标号）*],
+      ))
+      it
+      align(center, text(
+        ..basic_text_parms,
+        top-edge: (1em + 15.6pt * 1.25) / 2,
+        bottom-edge: (1em - 15.6pt * 1.25) / 2,
+        fill: rgb(255, 0, 0),
+        [*（表前、后各空 1 行）*],
+      ))
+    } else if it.kind == image {
+      align(center, text(
+        ..basic_text_parms,
+        top-edge: (1em + 15.6pt * 1.25) / 2,
+        bottom-edge: (1em - 15.6pt * 1.25) / 2,
+        fill: rgb(255, 0, 0),
+        [*（图题及图内文字为五号字体，按章标号，单位格式见图）*],
+      ))
+      it
+      align(center, text(
+        ..basic_text_parms,
+        top-edge: (1em + 15.6pt * 1.25) / 2,
+        bottom-edge: (1em - 15.6pt * 1.25) / 2,
+        fill: rgb(255, 0, 0),
+        [*（图前、后各空 1 行）*],
+      ))
+    } else {
+      it
+    }
+  },
   i_bibliography: source => {
     heading("参考文献", level: 1)
     show bibliography: set text(
@@ -471,7 +530,9 @@
 
 #let begin_thesis(body) = {
   show: common_style
+
   show heading: parms.i_heading
+  show figure: parms.i_figure
 
   body
 }
@@ -498,7 +559,18 @@
 
 #let contents_table() = {
   show: common_style
+  pagebreak(weak: true)
+  heading(level: 1, underline(
+    // docx to pdf conversion problem.
+    offset: 0.72pt, // should be this, but pdf renders wrong
+    stroke: 1.44pt,
+    text(
+      weight: "bold",
+      " " * 24 + "目  录" + " " * 24,
+    ),
+  ))
   (parms.i_outline)()
+  pagebreak(weak: true)
 }
 
 #let tailof_main(..args, body) = {
