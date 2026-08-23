@@ -22,10 +22,7 @@ Virtual auditory technology is also called auralization. It is brought forward a
 
 *KEY WORDS*: virtual auditory, HRTF, neural network
 
-#pagebreak()
-
 #(thesis.contents_table)()
-#pagebreak()
 
 #show: thesis.main_body
 

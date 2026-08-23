@@ -10,15 +10,24 @@
 
 ```rust
 #import "style.typ": thesis
+#show: thesis.begin
 #show: thesis.before_main
 // 中英文摘要
-#show: thesis.catalog // 自动生成目录
-#show thesis.main_body
-// 正文
-#show: thesis.tail
+= 摘要
+// 摘要内容...
+#pagebreak()
+= #text("ABSTRACT", font: "Times New Roman")
+// 英文摘要内容...
+#(thesis.contents_table)() // 目录
+#show: thesis.main_body // 正文
+= 绪论
+// ...
+#show: thesis.tailof_main
 // 开始不记章节的内容
-#(thesis.bib)("test_sty.bib") // 生成参考文献
-// 致谢, 附录等
+#(thesis.bib)("test_sty.bib") // 参考文献
+= 致谢
+= 附录
+= 毕业设计小结
 ```
 
 # validation & visual comparison
