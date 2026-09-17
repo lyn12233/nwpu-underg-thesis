@@ -80,7 +80,9 @@ $<eq1>
 
 测试引用。引用前表 2-1 引用后。引用前图图 2-1 引用后。
 
-公式@eq1 公式
+公式@eq1 公式, 行内公式 $1/2$ $111$ 111 $a/b(a/b)$ 111
+
+检查编号: $ A (partial f(x,y))/(partial x) + B (partial f(x,y))/(partial y) $
 
 #show: thesis.tailof_main
 

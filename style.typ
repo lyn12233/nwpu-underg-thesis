@@ -513,7 +513,7 @@
     } else if elem.func() == figure {
       link(elem.location(), box(
         // stroke: 0.5pt,
-        baseline: 0.3em,
+        baseline: 0em,
         if elem.kind == table {
           (
             "表"
@@ -544,11 +544,16 @@
       ))
     } else if elem.func() == math.equation {
       (
-        "公式"
-          + " "
-          + str(counter(math.equation).at(elem.location()).at(0))
-          + "-"
-          + str(counter(math.equation).at(elem.location()).at(0))
+        link(elem.location(), box(
+          baseline: 0em,
+          (
+            "公式"
+              + " "
+              + str(counter(math.equation).at(elem.location()).at(0))
+              + "-"
+              + str(counter(math.equation).at(elem.location()).at(0))
+          ),
+        ))
       )
     } else {
       it
@@ -572,6 +577,7 @@
     show outline.entry: outline_entry
     outline()
   },
+  i_equation_inline: it => box(baseline: -5% + 0.1pt, it, stroke: 0pt),
 )
 
 #let common_style(body) = {
@@ -580,8 +586,9 @@
   set par(..parms._par.main)
 
   show math.equation: set text(..parms._text.math)
-  show math.equation: set par(..parms._par.math)
-  show math.equation: set block(..parms._block.math)
+  show math.equation.where(block: true): set par(..parms._par.math)
+  show math.equation.where(block: true): set block(..parms._block.math)
+  show math.equation.where(block: false): parms.i_equation_inline
   set math.equation(..parms._equation)
 
   set figure(..parms._figure)
