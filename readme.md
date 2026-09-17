@@ -9,7 +9,10 @@
 # usage
 
 ```rust
-#import "style.typ": thesis
+#import "style.typ": get_thesis_by_name
+
+#let thesis = get_thesis_by_name("nwpu.undergraduate.release") // debug/release
+
 #show: thesis.begin
 #show: thesis.before_main
 // 中英文摘要
@@ -24,7 +27,7 @@
 // ...
 #show: thesis.tailof_main
 // 开始不记章节的内容
-#(thesis.bib)("test_sty.bib") // 参考文献
+#(thesis.bib)("your.bib") // 参考文献
 = 致谢
 = 附录
 = 毕业设计小结

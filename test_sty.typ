@@ -1,4 +1,6 @@
-#import "style.typ": thesis
+#import "style.typ": get_thesis_by_name
+
+#let thesis = get_thesis_by_name("nwpu.undergraduate.debug")
 
 #show: thesis.begin
 

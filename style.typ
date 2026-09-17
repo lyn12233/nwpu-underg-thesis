@@ -5,12 +5,14 @@
 ///
 /// # usage
 /// ```rust
-/// #show thesis.abstract // todo: differ cn/en
-/// // your abstract
-/// #show thesis.catalog // todo: or just #thesis.catalog()
-/// #show thesis.main_body
-/// // your thesis body
-/// // bibliography, acknowledgement, etc
+/// #import "style.typ": get_thesis_by_name
+/// #let thesis = get_thesis_by_name("nwpu.undergraduate.release")
+/// #show: thesis.begin
+/// #show: thesis.before_main // 中英文摘要
+/// #(thesis.contents_table)() // 目录
+/// #show: thesis.main_body // 正文
+/// #show: thesis.tailof_main // 不记章节的内容
+/// #(thesis.bib)("your.bib") // 参考文献, 致谢, 附录...
 /// ```
 ///
 /// # structure of code
@@ -341,7 +343,7 @@
   scaling: "smooth",
 )
 
-#let parms = (
+#let default_parms = (
   _text: (
     hdr1: (
       ..basic_text_parms,
@@ -580,97 +582,125 @@
   i_equation_inline: it => box(baseline: -5% + 0.1pt, it, stroke: 0pt),
 )
 
-#let common_style(body) = {
-  show: show-cn-fakebold
-  set text(..parms._text.main)
-  set par(..parms._par.main)
+#let get_thesis_from_parms(parms) = {
+  let common_style(body) = {
+    show: show-cn-fakebold
+    set text(..parms._text.main)
+    set par(..parms._par.main)
 
-  show math.equation: set text(..parms._text.math)
-  show math.equation.where(block: true): set par(..parms._par.math)
-  show math.equation.where(block: true): set block(..parms._block.math)
-  show math.equation.where(block: false): parms.i_equation_inline
-  set math.equation(..parms._equation)
+    show math.equation: set text(..parms._text.math)
+    show math.equation.where(block: true): set par(..parms._par.math)
+    show math.equation.where(block: true): set block(..parms._block.math)
+    show math.equation.where(block: false): parms.i_equation_inline
+    set math.equation(..parms._equation)
 
-  set figure(..parms._figure)
-  show figure.caption: parms._caption
-  show figure.where(kind: table): set figure.caption(position: parms._caption_pos.table)
-  show figure.where(kind: image): set figure.caption(position: parms._caption_pos.image)
-  set table(..parms._table)
-  show table: set text(..parms._text.table)
-  set image(..parms._image)
+    set figure(..parms._figure)
+    show figure.caption: parms._caption
+    show figure.where(kind: table): set figure.caption(position: parms._caption_pos.table)
+    show figure.where(kind: image): set figure.caption(position: parms._caption_pos.image)
+    set table(..parms._table)
+    show table: set text(..parms._text.table)
+    set image(..parms._image)
 
-  show cite: set text(..parms._text.cite)
+    show cite: set text(..parms._text.cite)
 
-  show heading.where(level: 1): set block(..parms._block.hdr1)
-  show heading.where(level: 2): set block(..parms._block.hdr2)
-  show heading.where(level: 3): set block(..parms._block.hdr3)
-  show heading.where(level: 1): set text(..parms._text.hdr1)
-  show heading.where(level: 2): set text(..parms._text.hdr2)
-  show heading.where(level: 3): set text(..parms._text.hdr3)
-  show heading.where(level: 1): set align(parms._align.hdr1)
-  show heading.where(level: 2): set align(parms._align.hdr2)
-  show heading.where(level: 3): set align(parms._align.hdr3)
+    show heading.where(level: 1): set block(..parms._block.hdr1)
+    show heading.where(level: 2): set block(..parms._block.hdr2)
+    show heading.where(level: 3): set block(..parms._block.hdr3)
+    show heading.where(level: 1): set text(..parms._text.hdr1)
+    show heading.where(level: 2): set text(..parms._text.hdr2)
+    show heading.where(level: 3): set text(..parms._text.hdr3)
+    show heading.where(level: 1): set align(parms._align.hdr1)
+    show heading.where(level: 2): set align(parms._align.hdr2)
+    show heading.where(level: 3): set align(parms._align.hdr3)
 
-  body
+    body
+  }
+  let begin_thesis(body) = {
+    show: common_style
+
+    show heading: parms.i_heading
+    show figure: parms.i_figure
+    show ref: parms.i_ref
+
+    body
+  }
+  let main_body(body) = {
+    show: common_style
+
+    set page(..parms._page.main)
+    set heading(..parms._heading.main)
+
+    counter(page).update(1)
+
+    body
+  }
+  let before_main(..args, body) = {
+    show: common_style
+
+    set page(..parms._page.before_main)
+    set heading(..parms._heading.before_main)
+
+    body
+  }
+  let contents_table() = {
+    show: common_style
+    pagebreak(weak: true)
+    heading(level: 1, underline(
+      // docx to pdf conversion problem.
+      offset: 0.72pt, // should be this, but pdf renders wrong
+      stroke: 1.44pt,
+      text(
+        weight: "bold",
+        " " * 24 + "目  录" + " " * 24,
+      ),
+    ))
+    (parms.i_outline)()
+    pagebreak(weak: true)
+  }
+  let tailof_main(..args, body) = {
+    show: common_style
+    set heading(..parms._heading.tail)
+    body
+  }
+  let thesis = (
+    begin: begin_thesis,
+    main_body: main_body,
+    before_main: before_main,
+    contents_table: contents_table,
+    tailof_main: tailof_main,
+    bib: parms.i_bibliography,
+  )
+  return thesis
 }
 
-#let begin_thesis(body) = {
-  show: common_style
-
-  show heading: parms.i_heading
-  show figure: parms.i_figure
-  show ref: parms.i_ref
-
-  body
+#let get_thesis_by_name(name) = {
+  if name == "nwpu.undergraduate.debug" {
+    get_thesis_from_parms(default_parms)
+  } else if name == "nwpu.undergraduate.release" {
+    let default_space = v(15.6pt * 1.25)
+    let release_parms = (
+      ..default_parms,
+      i_heading: it => {
+        if it.level == 1 {
+          default_space
+          it
+          default_space
+        } else { it }
+      },
+      i_figure: it => {
+        if it.kind == table or it.kind == image {
+          default_space
+          it
+          default_space
+        } else { it }
+      },
+    )
+    // get_thesis_from_parms(default_parms)
+    get_thesis_from_parms(release_parms)
+  } else {
+    panic("thesis template not provided" + str(name))
+  }
 }
 
-#let main_body(body) = {
-  show: common_style
-
-  set page(..parms._page.main)
-  set heading(..parms._heading.main)
-
-  counter(page).update(1)
-
-  body
-}
-
-#let before_main(..args, body) = {
-  show: common_style
-
-  set page(..parms._page.before_main)
-  set heading(..parms._heading.before_main)
-
-  body
-}
-
-#let contents_table() = {
-  show: common_style
-  pagebreak(weak: true)
-  heading(level: 1, underline(
-    // docx to pdf conversion problem.
-    offset: 0.72pt, // should be this, but pdf renders wrong
-    stroke: 1.44pt,
-    text(
-      weight: "bold",
-      " " * 24 + "目  录" + " " * 24,
-    ),
-  ))
-  (parms.i_outline)()
-  pagebreak(weak: true)
-}
-
-#let tailof_main(..args, body) = {
-  show: common_style
-  set heading(..parms._heading.tail)
-  body
-}
-
-#let thesis = (
-  begin: begin_thesis,
-  main_body: main_body,
-  before_main: before_main,
-  contents_table: contents_table,
-  tailof_main: tailof_main,
-  bib: parms.i_bibliography,
-)
+/// @todo: empty line after figure may cross pages
